@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Demo canvasCapture</title>
+
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
+
+        #canvas{
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas"></canvas>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.2.0/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
+    <script src="../src/canvasCapture.js"></script>
+
+    <!-- Create animation canvas -->
+    <script>
+        
+        (function() {
+
+            let canvas = document.querySelector('#canvas'),
+                ctx = canvas.getContext('2d');
+
+            canvas.width = window.innerWidth || document.body.clientWidth;
+            canvas.height = window.innerHeight || document.body.clientHeight;
+
+            let positions = {'x': 10, 'y': canvas.height / 2};
+            let meaning = 0;
+
+            function animation() {
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                ctx.beginPath();
+                ctx.save();
+                ctx.translate(positions.x, positions.y);
+                ctx.arc(0, 0, 10, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.restore();
+                ctx.closePath();
+
+                if (positions.x < canvas.width) {
+                    positions.x++;
+                }
+                
+                window.requestAnimationFrame(animation);
+            }
+
+            animation();
+            
+        })();
+
+    </script>
+
+    <!-- Use library for capture -->
+    <script>
+        
+        let canvas = document.querySelector('canvas'),
+            canvasCapture = new CanvasCapture(canvas);
+        
+        // Start the capture while 1s
+        canvasCapture.capture(0, 1000);
+
+    </script>
+</body>
+</html>
